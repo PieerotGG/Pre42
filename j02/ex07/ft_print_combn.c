@@ -10,7 +10,6 @@
 /*                                                                            */
 /******************************************************************************/ 
 
-
 void 	ft_putchar(int c);
 
 void	ft_putnbr_r(int nb)
@@ -34,11 +33,14 @@ char 	ft_is_valid(int i, int n)
 {
 	int		last;
 	int 	count;
+	int		tab;
 
 	last = 10;
 	count = 0;
+	tab = 0;
 	while (42)
 	{
+		tab++;
 		if (i == 0)
 			break;
 		count++;
@@ -46,6 +48,10 @@ char 	ft_is_valid(int i, int n)
 			return (0);
 		last = i % 10;
 		i /= 10;
+	}
+	if (i == 0 && tab == 2)
+	{
+		return (1);
 	}
 	return (count == n);
 }
@@ -78,6 +84,8 @@ void	ft_print_combn(int n)
 		current++;
 		if (ft_is_valid(current, n))
 		{
+			if (current > 0 && current < 10)
+				ft_putchar('0');
 			ft_putnbr(current);
 			if (max_value != current)
 			{
@@ -88,4 +96,3 @@ void	ft_print_combn(int n)
 	}
 	ft_putchar('\n');
 }
-
