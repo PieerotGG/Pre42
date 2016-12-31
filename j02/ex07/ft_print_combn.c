@@ -10,12 +10,8 @@
 /*                                                                            */
 /******************************************************************************/ 
 
-#include <unistd.h>
 
-void 	ft_putchar(int c)
-{
-	write(1, &c, 1);
-}
+void 	ft_putchar(int c);
 
 void	ft_putnbr_r(int nb)
 {
@@ -91,11 +87,5 @@ void	ft_print_combn(int n)
 		}
 	}
 	ft_putchar('\n');
-}
-
-int		main()
-{
-	ft_print_combn(6);
-	return 0;
 }
 
