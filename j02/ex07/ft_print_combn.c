@@ -10,89 +10,67 @@
 /*                                                                            */
 /******************************************************************************/ 
 
-void 	ft_putchar(int c);
+#include <unistd.h>
 
-void	ft_putnbr_r(int nb)
+void	ft_putchar(int c)
 {
-	if (nb < -9)
-		ft_putnbr_r(nb / 10);
-	ft_putchar(-(nb % 10) + '0');
+	write(1, &c, 1);
 }
 
-void	ft_putnbr(int nb)
+char	*get_min(char *s, int n)
 {
-	if (nb >= 0)
-		nb = -nb;
-	else
-		ft_putchar('-');
-	ft_putnbr_r(nb);
+	static char ref[] = "0123456789";
+	int		i;
+
+	i = -1;
+	while (++i < n)
+		s[i] = ref[i];
+	return (s);
 }
 
-
-char 	ft_is_valid(int i, int n)
+char	*increment(char *s, int n, char start)
 {
-	int		last;
-	int 	count;
-	int		tab;
+	int		i;
 
-	last = 10;
-	count = 0;
-	tab = 0;
-	while (42)
+	if (!start)
+		return (get_min(s, n));
+	i = n;
+	while (--i > 0)
 	{
-		tab++;
-		if (i == 0)
+		if (s[i] - '0' < 10 - (n - i))
 			break;
-		count++;
-		if (i % 10 >= last)
-			return (0);
-		last = i % 10;
-		i /= 10;
 	}
-	if (i == 0 && tab == 2)
-	{
-		return (1);
-	}
-	return (count == n);
-}
-
-int		ft_maximum_value(int n)
-{
-	int		max;
-	int		current;
-
-	max = 10 - n;
-	current = max;
-	while (++current <= 9)
-	{
-		max = (max * 10) + current;
-	}
-	return max;
+	if (!i && s[i] - '0' == 10 - n)
+		return ((char *)0);
+	s[i]++;
+	while (++i < n)
+		s[i] = s[i - 1] + 1;
+	return (s);
 }
 
 void	ft_print_combn(int n)
 {
-	int 	current;
-	int 	max_value;
+	char	s[10];
+	char	i;
+	char	j;
 
-	if(n == 0)
-		return;
-	current = -1;
-	max_value = ft_maximum_value(n);
-	while (max_value > current)
+	i = 0;
+	while (increment(s, n, i))
 	{
-		current++;
-		if (ft_is_valid(current, n))
+		if (i++)
 		{
-			if (current > 0 && current < 10)
-				ft_putchar('0');
-			ft_putnbr(current);
-			if (max_value != current)
-			{
-				ft_putchar(',');
-				ft_putchar(' ');
-			}
+			ft_putchar(',');
+			ft_putchar(' ');
 		}
+		j = 0;
+		while (j < n)
+			ft_putchar(s[j++]);
 	}
 	ft_putchar('\n');
+}
+
+int		main()
+{
+	ft_print_combn(2);
+	return 0;
 }
