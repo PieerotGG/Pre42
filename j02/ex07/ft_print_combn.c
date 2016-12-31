@@ -10,7 +10,12 @@
 /*                                                                            */
 /******************************************************************************/ 
 
-void ft_putchar(int c);
+#include <unistd.h>
+
+void 	ft_putchar(int c)
+{
+	write(1, &c, 1);
+}
 
 void	ft_putnbr_r(int nb)
 {
@@ -26,25 +31,10 @@ void	ft_putnbr(int nb)
 	else
 		ft_putchar('-');
 	ft_putnbr_r(nb);
-	ft_putchar('\n');
-}
-
-int		ft_int_digit_nbr(int i)
-{
-	int 	digit_number;
-
-	digit_number = 0;
-	while (i != 0)
-	{
-		i /= 10;
-		digit_number++;
-	}
-	return (digit_number);
 }
 
 
-
-char 	ft_is_ascending(int i, int n)
+char 	ft_is_valid(int i, int n)
 {
 	int		last;
 	int 	count;
@@ -64,18 +54,48 @@ char 	ft_is_ascending(int i, int n)
 	return (count == n);
 }
 
+int		ft_maximum_value(int n)
+{
+	int		max;
+	int		current;
+
+	max = 10 - n;
+	current = max;
+	while (++current <= 9)
+	{
+		max = (max * 10) + current;
+	}
+	return max;
+}
+
 void	ft_print_combn(int n)
 {
 	int 	current;
-	int 	digit_number;
-	digit_number = ft_int_digit_nbr(n);
-	current = 0;
-	while (1)
+	int 	max_value;
+
+	if(n == 0)
+		return;
+	current = -1;
+	max_value = ft_maximum_value(n);
+	while (max_value > current)
 	{
 		current++;
-		if (ft_int_digit_nbr(current) == n && ft_is_ascending(current, n))
+		if (ft_is_valid(current, n))
 		{
 			ft_putnbr(current);
+			if (max_value != current)
+			{
+				ft_putchar(',');
+				ft_putchar(' ');
+			}
 		}
 	}
+	ft_putchar('\n');
 }
+
+int		main()
+{
+	ft_print_combn(6);
+	return 0;
+}
+
